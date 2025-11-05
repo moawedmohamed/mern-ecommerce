@@ -4,6 +4,7 @@ import morgan from 'morgan';
 import dotenv from 'dotenv';
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 import authRoutes from './routes/auth.route';
+import cartRoutes from './routes/cart.route';
 import productRoutes from './routes/product.route';
 import { connectDB } from './lib/db';
 import cookieParser from 'cookie-parser';
@@ -13,6 +14,7 @@ app.use(cookieParser());
 app.use(morgan("tiny"));
 app.use("/api/auth", authRoutes)
 app.use("/api/products", productRoutes);
+app.use("/api/products", cartRoutes);
 const PORT: number = Number(process.env.PORT);
 
 app.listen(PORT, () => {

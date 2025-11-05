@@ -94,7 +94,7 @@ export const getProductByCategory = (req: Request, res: Response) => {
     }
 }
 
-export const toggleFeaturedProduct = async (req: Request, res: Response){
+export const toggleFeaturedProduct = async (req: Request, res: Response)=>{
     try {
         const product = await Product.findById(req.params.id);
         if (product) {

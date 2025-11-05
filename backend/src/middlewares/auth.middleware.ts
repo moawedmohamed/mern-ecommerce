@@ -1,10 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from 'jsonwebtoken';
 import User from "../models/user.model";
-import { IUser } from "../interfaces";
-interface UserRequest extends Request {
-    user?: IUser | null;
-}
+import {  UserRequest } from "../interfaces";
 export const protectRoute = async (req: UserRequest, res: Response, next: NextFunction) => {
     try {
         const accessToken = req.cookies.accessToken
