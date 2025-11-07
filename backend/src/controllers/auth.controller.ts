@@ -2,6 +2,7 @@ import { Request, Response } from "express"
 import jwt, { JwtPayload } from "jsonwebtoken";
 import User from "../models/user.model";
 import { redis } from "../lib/redis";
+import { UserRequest } from "../interfaces";
 const generateTokens = (userId: string) => {
     const accessToken = jwt.sign({ userId }, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: "15m" })
     const refreshToken = jwt.sign({ userId }, process.env.REFRESH_TOKEN_SECRET as string, { expiresIn: "7d" })
@@ -114,8 +115,17 @@ export const refreshToken = async (req: Request, res: Response) => {
             secure: process.env.NODE_ENV === "production",
 
         })
-        res.json({message:"Token refeshed successfully "})
+        res.json({ message: "Token refeshed successfully " })
     } catch (error: any) {
+        res.status(500).json({ message: "Server error", error: error.message });
+    }
+}
+
+export const getProfile = async (req: UserRequest, res: Response) => {
+    try {
+        res.json(req.user);
+    } catch (error: any) {
+        console.log('Error for the getProfile function');
         res.status(500).json({ message: "Server error", error: error.message });
     }
 }
