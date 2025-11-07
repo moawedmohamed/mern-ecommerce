@@ -1,4 +1,4 @@
 import dotenv from 'dotenv'
 dotenv.config()
 import Stripe from "stripe";
-export const stripe = new Stripe(process.env.STRIPE_API_KEY as string)
+export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string)
