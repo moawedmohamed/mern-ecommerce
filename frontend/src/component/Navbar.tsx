@@ -4,7 +4,7 @@ import { useUserStore } from "../stores/useUserStore";
 
 const Navbar = () => {
   const { user, logout,checkingAuth } = useUserStore();
-  const isAdmin = user?.role==="Admin";
+  const isAdmin = user?.role === "admin";
   if (checkingAuth) {
     return null; // أو Spinner صغير بدل Navbar حتى ينتهي التحقق
   }

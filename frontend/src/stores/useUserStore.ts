@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from 'zustand'
 import toast from 'react-hot-toast'
 import axios from '../lib/axios'
+
 import { type IUserStore, type ISignup, type ILogin } from '../interfaces'
 export const useUserStore = create<IUserStore>((set, get) => ({
     user: null,
@@ -30,18 +32,20 @@ export const useUserStore = create<IUserStore>((set, get) => ({
             console.log(res.data);
             set({ user: res.data.user, isLoading: false })
             toast.success(res.data.message || 'Login successful')
+            console.log('from  login function');
         } catch (error: any) {
             set({ isLoading: false })
             toast.error(error?.message || 'Invalid credentials')
         }
     },
     checkAuth: async () => {
-
+        set({ checkingAuth: true });
         try {
-            const res = await axios.get('/auth/profile');
-            set({ user: res.data.user, checkingAuth: false })
-        } catch (error: any) {
-            set({ checkingAuth: false, user: null })
+            const response = await axios.get("/auth/profile");
+            set({ user: response.data, checkingAuth: false });
+        } catch (error:any) {
+            console.log(error.message);
+            set({ checkingAuth: false, user: null });
         }
     },
     logout: async () => {
