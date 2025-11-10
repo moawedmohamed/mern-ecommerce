@@ -5,10 +5,15 @@ export type ISignup = {
     confirmPassword: string
 
 }
+export type ILogin = {
+    email: string,
+    password: string
+}
 export interface IUser {
     id: string
     name: string
     email: string
+    role?: string
 }
 
 export interface IUserStore {
@@ -16,4 +21,7 @@ export interface IUserStore {
     isLoading: boolean
     checkingAuth: boolean
     signup: (data: ISignup) => Promise<void>
+    login: (data: ILogin) => Promise<void>
+    checkAuth: () => Promise<void>
+    logout: () => Promise<void>
 }
