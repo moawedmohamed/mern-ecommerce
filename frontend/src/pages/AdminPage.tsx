@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import CreateProductForm from "../component/CreateProductForm";
 import ProductsList from "../component/ProductsList ";
 import AnalyticsTab from "../component/AnalyticsTab";
-
+import { useProductStore } from "../stores/useProductStore";
 
 const tabs = [
   { id: "create", label: "Create Product", icon: PlusCircle },
@@ -13,7 +13,10 @@ const tabs = [
 ];
 const AdminPage = () => {
   const [activeTab, setActiveTab] = useState("create");
-//   const { fetchAllProducts } = useProductStore();
+  const { fetchAllProducts } = useProductStore();
+  useEffect(() => {
+    fetchAllProducts();
+  }, [fetchAllProducts]);
   return (
     <div className="min-h-screen relative overflow-hidden">
       <div className="relative z-10 container mx-auto px-4 py-16">
@@ -41,10 +44,10 @@ const AdminPage = () => {
             {tab.label}
           </button>
         ))}
-        {activeTab === "create" && <CreateProductForm />}
-        {activeTab === "products" && <ProductsList />}
-        {activeTab === "analytics" && <AnalyticsTab />}
       </div>
+      {activeTab === "create" && <CreateProductForm />}
+      {activeTab === "products" && <ProductsList />}
+      {activeTab === "analytics" && <AnalyticsTab />}
     </div>
   );
 };

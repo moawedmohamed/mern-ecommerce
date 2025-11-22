@@ -8,6 +8,7 @@ import { useUserStore } from "./stores/useUserStore";
 import { useEffect } from "react";
 import Spinner from "./component/Spinner";
 import AdminPage from "./pages/AdminPage";
+import CategoryPage from "./pages/CategoryPage";
 
 const App = () => {
   const { user, checkAuth, checkingAuth } = useUserStore();
@@ -42,7 +43,7 @@ const App = () => {
             path="/secret-dashboard"
             element={
               checkingAuth ? (
-                <Spinner  /> // أثناء التحقق
+                <Spinner /> // أثناء التحقق
               ) : user?.role === "admin" ? (
                 <AdminPage />
               ) : user ? (
@@ -52,6 +53,7 @@ const App = () => {
               )
             }
           />
+          <Route path="/login" element={<CategoryPage />} />
         </Routes>
       </div>
     </div>

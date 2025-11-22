@@ -25,3 +25,23 @@ export interface IUserStore {
     checkAuth: () => Promise<void>
     logout: () => Promise<void>
 }
+export interface IProduct {
+    _id: string,
+    name: string,
+    description: string,
+    price: number,
+    category: string,
+    image: string,
+    isFeatured?: boolean,  
+}
+export interface IProductStore {
+    products: IProduct[],
+    isLoading: boolean,
+    setProduct: (product: IProduct[]) => void; // ✅ add this line
+    fetchAllProducts: () => Promise<void>
+    createProduct: (product: IProduct) => Promise<void>
+    deleteProduct: (id: string) => Promise<void>
+    toggleFeaturedProduct: (id: string) => Promise<void>
+
+
+}

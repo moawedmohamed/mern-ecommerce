@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from 'jsonwebtoken';
 import User from "../models/user.model";
-import {  UserRequest } from "../interfaces";
+import { UserRequest } from "../interfaces";
 export const protectRoute = async (req: UserRequest, res: Response, next: NextFunction) => {
     try {
         const accessToken = req.cookies.accessToken
@@ -12,13 +12,13 @@ export const protectRoute = async (req: UserRequest, res: Response, next: NextFu
             const decoded = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET as string) as jwt.JwtPayload & { userId: string };
             const user = await User.findById(decoded.userId).select("-password");
             if (!user) {
-                res.status(401).json({ message: " User not found" });
+                return res.status(401).json({ message: " User not found" });
             }
             req.user = user;
             next();
         } catch (error: any) {
             if (error.name === 'TokenExpiredError') {
-                res.status(401).json({ message: "Unauthorized - Token expired" });
+                return res.status(401).json({ message: "Unauthorized - Token expired" });
             }
             throw error;
         }
@@ -31,6 +31,6 @@ export const adminRoute = async (req: UserRequest, res: Response, next: NextFunc
     if (req.user && req.user.role === "admin") {
         next();
     } else {
-        res.status(403).json({ message: "Access denied - You are not an admin" });
+       return res.status(403).json({ message: "Access denied - You are not an admin" });
     }
 }

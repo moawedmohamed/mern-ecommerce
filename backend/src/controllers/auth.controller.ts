@@ -43,7 +43,7 @@ export const signup = async (req: Request, res: Response) => {
         await storeRefreshToken(user._id.toString(), refreshToken);
         setCookies(res, accessToken, refreshToken)
         return res.status(201).json({
-            message: "User created ", user: {
+            message: "Account created successfully", user: {
                 _id: user._id,
                 name: user.name,
                 email: user.email,
@@ -51,12 +51,12 @@ export const signup = async (req: Request, res: Response) => {
             }
         });
     } catch (error: any) {
+        console.log('error', error);
         res.status(500).json({ message: "Server error", error: error.message });
     }
 }
 export const login = async (req: Request, res: Response) => {
     try {
-        console.log('inside');
         const { email, password } = req.body;
         const user = await User.findOne({ email })
         if (user && (await user.comparePassword(password))) {
