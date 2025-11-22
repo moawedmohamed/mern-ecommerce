@@ -3,6 +3,7 @@ import { create } from "zustand";
 import type { IProduct, IProductStore } from "../interfaces";
 import axios from "../lib/axios";
 import toast from "react-hot-toast";
+import { AwardIcon } from "lucide-react";
 
 
 export const useProductStore = create<IProductStore>((set) => ({
@@ -53,5 +54,16 @@ export const useProductStore = create<IProductStore>((set) => ({
             toast(error?.message)
             console.log(error);
         }
+    },
+    fetchProductByCategory: async (category: string) => {
+        try {
+            set({ isLoading: true })
+            const res = await axios.get(`/products/category/${category}`)
+            set({ products: res.data.products, isLoading: false })
+        } catch (error: any) {
+            set({ isLoading: false })
+            toast.error(error?.message)
+        }
+
     }
 }))

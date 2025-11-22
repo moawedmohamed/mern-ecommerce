@@ -53,7 +53,7 @@ const App = () => {
               )
             }
           />
-          <Route path="/login" element={<CategoryPage />} />
+          <Route path="/category/:category" element={<CategoryPage />} />
         </Routes>
       </div>
     </div>

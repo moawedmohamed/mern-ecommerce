@@ -83,10 +83,10 @@ export const getRecommendedProducts = async (req: Request, res: Response) => {
     }
 }
 
-export const getProductByCategory = (req: Request, res: Response) => {
+export const getProductByCategory = async (req: Request, res: Response) => {
     const { category } = req.params
     try {
-        const product = Product.find({ category })
+        const product = await Product.find({ category })
         res.status(200).json({ product })
 
     } catch (error: any) {

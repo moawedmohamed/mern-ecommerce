@@ -1,9 +1,13 @@
-import React from 'react'
+import { useEffect } from "react";
+import { useProductStore } from "../stores/useProductStore";
 
-const categoryPage = () => {
-  return (
-    <div>categoryPage</div>
-  )
-}
+const CategoryPage = () => {
+  const { fetchProductByCategory, products } = useProductStore();
+  useEffect(() => {
+    fetchProductByCategory("shoes");
+  }, [fetchProductByCategory]);
+  console.log(products);
+  return <div>categoryPage</div>;
+};
 
-export default categoryPage
+export default CategoryPage;

@@ -32,7 +32,7 @@ export interface IProduct {
     price: number,
     category: string,
     image: string,
-    isFeatured?: boolean,  
+    isFeatured?: boolean,
 }
 export interface IProductStore {
     products: IProduct[],
@@ -42,6 +42,5 @@ export interface IProductStore {
     createProduct: (product: IProduct) => Promise<void>
     deleteProduct: (id: string) => Promise<void>
     toggleFeaturedProduct: (id: string) => Promise<void>
-
-
+    fetchProductByCategory: (category: string) => Promise<void>
 }
