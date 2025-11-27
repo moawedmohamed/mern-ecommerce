@@ -86,8 +86,8 @@ export const getRecommendedProducts = async (req: Request, res: Response) => {
 export const getProductByCategory = async (req: Request, res: Response) => {
     const { category } = req.params
     try {
-        const product = await Product.find({ category })
-        res.status(200).json({ product })
+        const products = await Product.find({ category })
+        res.status(200).json({ products })
 
     } catch (error: any) {
         console.log('error form getCategory function', error.message);

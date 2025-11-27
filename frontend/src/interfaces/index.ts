@@ -32,6 +32,7 @@ export interface IProduct {
     price: number,
     category: string,
     image: string,
+    quantity: number,
     isFeatured?: boolean,
 }
 export interface IProductStore {
@@ -43,4 +44,17 @@ export interface IProductStore {
     deleteProduct: (id: string) => Promise<void>
     toggleFeaturedProduct: (id: string) => Promise<void>
     fetchProductByCategory: (category: string) => Promise<void>
+}
+interface ICoupon {
+    discountPercentage: number
+}
+export interface ICart {
+    cart: IProduct[],
+    isLoading: boolean,
+    total: number,
+    subTotal: number,
+    coupon: null | ICoupon
+    getProductCart: () => Promise<void>
+    addToCart: (product: IProduct) => void,
+    calculateTotals: () => void
 }

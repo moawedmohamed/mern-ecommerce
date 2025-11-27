@@ -22,7 +22,7 @@ export const useUserStore = create<IUserStore>((set, get) => ({
             toast.success(res.data.message || 'Account created successfully')
         } catch (error: any) {
             set({ isLoading: false });
-            toast.error(error?.message || "an error occurred")
+            toast.error(error?.response.data.message || "an error occurred")
         }
     },
     login: async ({ email, password }: ILogin) => {
@@ -35,7 +35,8 @@ export const useUserStore = create<IUserStore>((set, get) => ({
             console.log('from  login function');
         } catch (error: any) {
             set({ isLoading: false })
-            toast.error(error?.message || 'Invalid credentials')
+            // console.log(error?.response.data.message);
+            toast.error(error?.response.data.message || 'Invalid credentials')
         }
     },
     checkAuth: async () => {
@@ -43,7 +44,7 @@ export const useUserStore = create<IUserStore>((set, get) => ({
         try {
             const response = await axios.get("/auth/profile");
             set({ user: response.data, checkingAuth: false });
-        } catch (error:any) {
+        } catch (error: any) {
             console.log(error.message);
             set({ checkingAuth: false, user: null });
         }
@@ -54,7 +55,7 @@ export const useUserStore = create<IUserStore>((set, get) => ({
             set({ user: null });
 
         } catch (error: any) {
-            toast.error(error?.message || 'An error occurred 1')
+            toast.error(error?.response.data.message || 'An error occurred 1')
             console.log('object');
         }
     }

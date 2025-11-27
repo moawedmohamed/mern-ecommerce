@@ -9,12 +9,18 @@ import { useEffect } from "react";
 import Spinner from "./component/Spinner";
 import AdminPage from "./pages/AdminPage";
 import CategoryPage from "./pages/CategoryPage";
+import CartPage from "./pages/CartPage";
+import { useCartStore } from "./stores/useCartStore";
 
 const App = () => {
+  const { getProductCart } = useCartStore();
   const { user, checkAuth, checkingAuth } = useUserStore();
   useEffect(() => {
     checkAuth();
   }, [checkAuth]);
+  useEffect(() => {
+    getProductCart();
+  }, [getProductCart]);
   if (checkingAuth) {
     return <Spinner />;
   }
@@ -54,6 +60,10 @@ const App = () => {
             }
           />
           <Route path="/category/:category" element={<CategoryPage />} />
+          <Route
+            path="/cart"
+            element={user ? <CartPage /> : <Navigate to={"/login"} />}
+          />
         </Routes>
       </div>
     </div>

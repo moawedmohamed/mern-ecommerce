@@ -111,7 +111,7 @@ export const refreshToken = async (req: Request, res: Response) => {
         res.cookie("accessToken", accessToken, {
             httpOnly: true,
             sameSite: "strict",
-            maxAge: 15 * 60 * 1000,
+            maxAge: 15 * 60 * 60 * 1000,
             secure: process.env.NODE_ENV === "production",
 
         })

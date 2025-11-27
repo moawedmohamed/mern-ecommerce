@@ -3,7 +3,7 @@ import { create } from "zustand";
 import type { IProduct, IProductStore } from "../interfaces";
 import axios from "../lib/axios";
 import toast from "react-hot-toast";
-import { AwardIcon } from "lucide-react";
+// import { type } from './../interfaces/index';
 
 
 export const useProductStore = create<IProductStore>((set) => ({
