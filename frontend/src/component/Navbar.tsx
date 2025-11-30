@@ -5,7 +5,7 @@ import { useCartStore } from "../stores/useCartStore";
 
 const Navbar = () => {
   const { user, logout,checkingAuth } = useUserStore();
-  const { cart } = useCartStore();
+  const { cart=[] } = useCartStore();
   const isAdmin = user?.role === "admin";
   if (checkingAuth) {
     return null; // أو Spinner صغير بدل Navbar حتى ينتهي التحقق

@@ -13,7 +13,6 @@ export const useCartStore = create<ICart>((set, get) => ({
         set({ isLoading: true })
         try {
             await axios.post('/cart', { productId: product._id });
-            toast.success('product added successfully');
             set((prevData) => {
                 const existingItem = prevData.cart.find(
                     (item) => item._id === product._id
@@ -39,22 +38,26 @@ export const useCartStore = create<ICart>((set, get) => ({
         } catch (error: any) {
             set({ isLoading: false })
             toast.error(error?.message)
+            console.log(error);
+
         }
     },
     getProductCart: async () => {
         set({ isLoading: true })
         try {
             const res = await axios.get('/cart')
-            set({ cart: res.data.data, isLoading: false })
+            console.log(res);
+            set({ cart: res.data, isLoading: false })
             get().calculateTotals();
         } catch (error: any) {
             set({ cart: [], isLoading: false })
             toast.error(error?.message)
+            console.log(error);
         }
     },
     calculateTotals: () => {
         const { cart, coupon } = get();
-        const subTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+        const subTotal = (cart || []).reduce((sum, item) => sum + item.price * item.quantity, 0);
         let total = subTotal;
         if (coupon) {
             const discount = subTotal * (coupon.discountPercentage / 100);
