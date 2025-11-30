@@ -42,6 +42,15 @@ export const useCartStore = create<ICart>((set, get) => ({
 
         }
     },
+    removeFromCart: async (productId: string) => {
+        try {
+            await axios.delete(`/cart`, { data: { productId } });
+            set(prevData => ({ cart: prevData.cart.filter(item => item._id !== productId) }));
+            get().calculateTotals();
+        } catch (error) {
+            console.log(error);
+        }
+    },
     getProductCart: async () => {
         set({ isLoading: true })
         try {
