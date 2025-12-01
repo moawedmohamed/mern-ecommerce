@@ -76,7 +76,8 @@ export const deleteProduct = async (req: Request, res: Response) => {
 
 export const getRecommendedProducts = async (req: Request, res: Response) => {
     try {
-        const products = await Product.find({ $sample: { size: 3 } }, { $project: { _id: 1, name: 1, description: 1, price: 1, image: 1, category: 1, isFeatured: 1 } })
+        const products = await Product.aggregate([{ $sample: { size: 3 } }, { $project: { _id: 1, name: 1, description: 1, price: 1, image: 1, category: 1, isFeatured: 1 } }])
+        return res.status(200).json(products);
     } catch (error: any) {
         console.log('error form recommendation function', error.message);
         res.status(500).json({ message: "Server error", error: error.message })

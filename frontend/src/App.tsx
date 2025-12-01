@@ -19,8 +19,9 @@ const App = () => {
     checkAuth();
   }, [checkAuth]);
   useEffect(() => {
-    getProductCart();
-  }, [getProductCart]);
+    if (!user)return;
+      getProductCart();
+  }, [getProductCart,user]);
   if (checkingAuth) {
     return <Spinner />;
   }

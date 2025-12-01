@@ -52,8 +52,9 @@ export interface ICart {
     cart: IProduct[],
     isLoading: boolean,
     total: number,
-    subTotal: number,
+    subtotal: number,
     coupon: null | ICoupon
+    isCouponApplied: boolean,
     getProductCart: () => Promise<void>
     addToCart: (product: IProduct) => void,
     calculateTotals: () => void

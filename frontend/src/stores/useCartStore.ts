@@ -8,7 +8,8 @@ export const useCartStore = create<ICart>((set, get) => ({
     isLoading: false,
     coupon: null,
     total: 0,
-    subTotal: 0,
+    subtotal: 0,
+    isCouponApplied: false,
     addToCart: async (product) => {
         set({ isLoading: true })
         try {
@@ -85,6 +86,6 @@ export const useCartStore = create<ICart>((set, get) => ({
             const discount = subTotal * (coupon.discountPercentage / 100);
             total = subTotal - discount;
         }
-        set({ subTotal, total });
+        set({ subtotal: subTotal, total });
     }
 }))
