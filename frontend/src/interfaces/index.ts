@@ -57,4 +57,6 @@ export interface ICart {
     getProductCart: () => Promise<void>
     addToCart: (product: IProduct) => void,
     calculateTotals: () => void
+    removeFromCart: (productId: string) => Promise<void>
+    updateQuantity: (productId: string, quantity: number) => void
 }

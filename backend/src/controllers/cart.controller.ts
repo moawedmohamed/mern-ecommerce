@@ -8,9 +8,10 @@ export const getCartProducts = async (req: UserRequest, res: Response) => {
         const products = await Product.find({ _id: { $in: req.user?.cartItem } })
         console.log(products);
         const cartItems = products.map((product) => {
-            const item = req.user?.cartItem.find(item => item._id === product._id);
+            const item = req.user?.cartItem.find(item => item._id.toString() === (product._id as string).toString());
             return { ...product.toJSON(), quantity: item?.quantity }
         })
+        console.log(cartItems);
         return res.status(200).json(cartItems)
     } catch (error: any) {
         console.log('Error in getCartProducts controller', error);
@@ -21,11 +22,11 @@ export const addCart = async (req: UserRequest, res: Response) => {
     try {
         const { productId } = req.body;
         const user = req.user
-        const existingItem = user?.cartItem.find(item => item._id === productId)
+        const existingItem = user?.cartItem.find(item => item._id.toString() === productId)
         if (existingItem) {
             existingItem.quantity++
         } else {
-            user?.cartItem.push(productId)
+            user?.cartItem.push({ _id: productId, quantity: 1, product: productId })
         }
         await user?.save()
         res.status(200).json({ message: "Product added to cart", cart: user?.cartItem })
@@ -37,15 +38,13 @@ export const addCart = async (req: UserRequest, res: Response) => {
 export const removeAllFromCart = async (req: UserRequest, res: Response) => {
     try {
         const { productId } = req.body;
-        console.log(req.body);
         const user = req.user;
         if (!productId && user) {
             user.cartItem = [];
         } else {
 
             if (user) {
-                console.log("Cart before filter:", user.cartItem);
-                user.cartItem = (user?.cartItem || []).filter(item => item._id !== productId)
+                user.cartItem = (user?.cartItem || []).filter(item => item._id.toString() !== productId)
             }
         }
         await user?.save()
@@ -61,14 +60,16 @@ export const updateQuantity = async (req: UserRequest, res: Response) => {
         const { id: productId } = req.params
         const { quantity } = req.body;
         const user = req.user;
-        const existingItem = user?.cartItem.find(item => item._id === productId);
+        const existingItem = user?.cartItem.find(item => item._id.toString() === productId);
         if (existingItem) {
             if (quantity === 0 && user) {
-                user.cartItem = user.cartItem.filter(item => item._id !== productId)
+                user.cartItem = user.cartItem.filter(item => item._id.toString() !== productId)
                 await user.save();
                 return res.status(200).json(user?.cartItem)
             }
             existingItem.quantity = quantity
+            await user?.save();
+            return res.status(200).json(user?.cartItem);
         } else {
             res.status(404).json({ message: "Product not found" })
         }
