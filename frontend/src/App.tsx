@@ -11,8 +11,8 @@ import AdminPage from "./pages/AdminPage";
 import CategoryPage from "./pages/CategoryPage";
 import CartPage from "./pages/CartPage";
 import { useCartStore } from "./stores/useCartStore";
-import PurchaseSuccessPage from "./component/PurchaseSuccessPage";
-import PurchaseCancelPage from "./component/PurchaseCancelPage";
+import PurchaseSuccessPage from "./pages/PurchaseSuccessPage";
+import PurchaseCancelPage from "./pages/PurchaseCancelPage";
 
 const App = () => {
   const { getProductCart } = useCartStore();
