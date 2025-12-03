@@ -38,7 +38,7 @@ try {
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       {/* confetti */}
-      <Confetti width={window.innerWidth} heigth={window.innerHeigth} gravity={0.1} style ={{zIndex:99}} 
+      <Confetti width={window.innerWidth} height={window.innerHeight} gravity={0.1} style ={{zIndex:99}} 
       numberOfPieces={700} recycle={false}
       
       />
