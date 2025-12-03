@@ -86,5 +86,6 @@ export const useCartStore = create<ICart>((set, get) => ({
             total = subTotal - discount;
         }
         set({ subtotal: subTotal, total });
-    }
+    },
+    clearCart: () => set({ cart: [], total: 0, subtotal: 0, isCouponApplied: false, coupon: null }),
 }))

@@ -8,7 +8,7 @@ const orderSchema = new Schema({
             price: { type: Number, required: true },
         }
     ],
-    totalAmount: { type: Number, required: true, unique: true },
+    totalAmount: { type: Number, required: true },
     stripeSessionId: { type: String, required: true },
 }, { timestamps: true });
 const Order = mongoose.model("Order", orderSchema);

@@ -51,7 +51,7 @@ export const createCheckoutSession = async (req: UserRequest, res: Response) => 
                 couponCode: couponCode || '',
                 products: JSON.stringify(
                     products.map((p) => ({
-                        id: p._id,
+                        productId: p._id,
                         name: p.name,
                         price: p.price,
                         quantity: p.quantity
@@ -110,7 +110,7 @@ export const createCheckoutSuccess = async (req: UserRequest, res: Response) => 
             const newOrder = await Order.create({
                 user: session.metadata?.userId,
                 products: products.map((product: { productId: number, quantity: number, price: number }) => ({
-                    productId: product.productId,
+                    product: product.productId,
                     quantity: product.quantity,
                     price: product.price,
                 })),
@@ -126,7 +126,7 @@ export const createCheckoutSuccess = async (req: UserRequest, res: Response) => 
         }
 
     } catch (error: any) {
-        console.log('Error in the payment controller ');
+        console.log('Error in the payment controller ',error);
         res.status(500).json({ message: "Payment failed", error: error.message })
     }
 }    
