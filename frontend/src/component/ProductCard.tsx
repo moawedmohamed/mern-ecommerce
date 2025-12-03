@@ -22,7 +22,6 @@ const ProductCard = ({ product }: ProductCardProps) => {
       toast.success("Product added to cart");
     }
   };
-  console.log(product.image);
   return (
     <div className="flex w-full relative flex-col overflow-hidden rounded-lg border border-gray-700 shadow-lg">
         {/* <div className="absolute inset-0 bg-black bg-opacity-20" /> */}

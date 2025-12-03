@@ -46,6 +46,7 @@ export interface IProductStore {
     fetchProductByCategory: (category: string) => Promise<void>
 }
 interface ICoupon {
+    code: React.ReactNode
     discountPercentage: number
 }
 export interface ICart {

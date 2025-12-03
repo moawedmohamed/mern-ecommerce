@@ -50,13 +50,13 @@ const App = () => {
             path="/secret-dashboard"
             element={
               checkingAuth ? (
-                <Spinner /> // أثناء التحقق
+                <Spinner /> 
               ) : user?.role === "admin" ? (
                 <AdminPage />
               ) : user ? (
-                <Navigate to={"/"} /> // مستخدم عادي → تحويل للصفحة الرئيسية
+                <Navigate to={"/"} /> 
               ) : (
-                <Navigate to={"/login"} /> // غير مسجل دخول → تحويل لل login
+                <Navigate to={"/login"} /> 
               )
             }
           />

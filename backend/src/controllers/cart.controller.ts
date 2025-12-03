@@ -4,14 +4,11 @@ import Product from "../models/product.model";
 
 export const getCartProducts = async (req: UserRequest, res: Response) => {
     try {
-        console.log("USER CART ITEMS RAW:", req.user?.cartItem);
         const products = await Product.find({ _id: { $in: req.user?.cartItem } })
-        console.log(products);
         const cartItems = products.map((product) => {
             const item = req.user?.cartItem.find(item => item._id.toString() === (product._id as string).toString());
             return { ...product.toJSON(), quantity: item?.quantity }
         })
-        console.log(cartItems);
         return res.status(200).json(cartItems)
     } catch (error: any) {
         console.log('Error in getCartProducts controller', error);

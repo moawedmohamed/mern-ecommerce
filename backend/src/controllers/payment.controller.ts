@@ -63,9 +63,9 @@ export const createCheckoutSession = async (req: UserRequest, res: Response) => 
             if (req.user?._id)
                 await createNewCoupon(req.user._id.toString())
         }
-        return res.status(200).json({ id: session.id, totalAmount: totalAmount / 100 })
+        return res.status(200).json({ url: session.url, totalAmount: totalAmount / 100 })
     } catch (error: any) {
-        console.log('Error in the payment controller ');
+        console.log('Error in the payment controller ', error);
         return res.status(500).json({ message: error.message })
     }
 }
@@ -78,6 +78,10 @@ const createStripeCoupon = async (discountPercentage: number) => {
     return coupon.id;
 }
 const createNewCoupon = async (userId: string) => {
+    const existingCoupon = await Coupon.findOne({ userId });
+    if (existingCoupon) {
+        return existingCoupon; // أو تعطي رسالة خطأ حسب منطقك
+    }
     const coupon = await Coupon.create({
         code: "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),
         discountPercentage: 10,

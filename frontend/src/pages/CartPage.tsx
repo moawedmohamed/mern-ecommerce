@@ -6,10 +6,10 @@ import CartItem from "../component/CartItem";
 import PeopleAlsoBought from "../component/PeopleAlsoBought";
 import type { IProduct } from "../interfaces";
 import OrderSummary from "../component/OrderSummary";
+import GiftCouponCard from "../component/GiftCouponCard";
 
 const CartPage = () => {
   const { cart } = useCartStore();
-	console.log(cart);
   return (
     <div className="py-8 md:py-16">
       <div className="mx-auto max-w-7xl px-4 2xl:px-0">
@@ -40,7 +40,7 @@ const CartPage = () => {
 							transition={{ duration: 0.5, delay: 0.4 }}
 						>
 							<OrderSummary />
-							{/* <GiftCouponCard /> */}
+							<GiftCouponCard />
 						</motion.div>
 					)}
 				</div>
