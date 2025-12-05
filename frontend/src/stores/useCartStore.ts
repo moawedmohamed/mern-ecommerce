@@ -96,4 +96,36 @@ export const useCartStore = create<ICart>((set, get) => ({
             toast.error(error?.message || 'Something went wrong');
         }
     },
+    getMyCoupons: async () => { 
+        try {
+            const res = await axios.get('/coupons');
+            set({ coupon: res.data, isLoading: false });
+            return res.data;
+        } catch (error: any) {
+            console.log(error);
+            toast.error(error?.message || 'Something went wrong');
+            return [];
+        }
+    },
+    applyCoupon: async (code: string) => {
+    try {
+        const res = await axios.post('/coupons/validate', { code });
+        set({ coupon: res.data, isLoading: false });
+        get().calculateTotals();
+        return res.data;
+    } catch (error: any) {
+        console.log(error);
+        toast.error(error?.message || 'Something went wrong');
+        return [];
+    }
+    },
+    removeCoupon: async () => { 
+        try {
+            set({ coupon: null, isCouponApplied: false });
+        get().calculateTotals();
+        } catch (error:any) {
+            console.log(error);
+            toast.error(error?.message || 'Something went wrong');
+        }
+    }
 }))
