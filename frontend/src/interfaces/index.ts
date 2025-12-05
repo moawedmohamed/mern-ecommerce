@@ -45,9 +45,10 @@ export interface IProductStore {
     toggleFeaturedProduct: (id: string) => Promise<void>
     fetchProductByCategory: (category: string) => Promise<void>
 }
-interface ICoupon {
-    code: React.ReactNode
+export interface ICoupon {
+    code: string
     discountPercentage: number
+  
 }
 export interface ICart {
     cart: IProduct[],

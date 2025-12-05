@@ -82,8 +82,8 @@ export const useCartStore = create<ICart>((set, get) => ({
         const subTotal = (cart || []).reduce((sum, item) => sum + item.price * item.quantity, 0);
         let total = subTotal;
         if (coupon) {
-            const discount = subTotal * (coupon.discountPercentage / 100);
-            total = subTotal - discount;
+            const discountPercentage = subTotal * (coupon.discountPercentage / 100);
+            total = subTotal - discountPercentage;
         }
         set({ subtotal: subTotal, total });
     },
@@ -96,10 +96,14 @@ export const useCartStore = create<ICart>((set, get) => ({
             toast.error(error?.message || 'Something went wrong');
         }
     },
-    getMyCoupons: async () => { 
+    getMyCoupons: async () => {
         try {
             const res = await axios.get('/coupons');
-            set({ coupon: res.data, isLoading: false });
+            const formattedCoupon = {
+                code: res.data.code,
+                discountPercentage: res.data.discountPercentage
+            };
+            set({ coupon: formattedCoupon, isLoading: false });
             return res.data;
         } catch (error: any) {
             console.log(error);
@@ -108,22 +112,27 @@ export const useCartStore = create<ICart>((set, get) => ({
         }
     },
     applyCoupon: async (code: string) => {
-    try {
-        const res = await axios.post('/coupons/validate', { code });
-        set({ coupon: res.data, isLoading: false });
-        get().calculateTotals();
-        return res.data;
-    } catch (error: any) {
-        console.log(error);
-        toast.error(error?.message || 'Something went wrong');
-        return [];
-    }
+        try {
+            const res = await axios.post('/coupons/validate', { code });
+            console.log(res)
+            const formattedCoupon = {
+                code: res.data.code,
+                discountPercentage: res.data.discount
+            };
+            set({ coupon: formattedCoupon, isCouponApplied:true });
+            get().calculateTotals();
+            return res.data;
+        } catch (error: any) {
+            console.log(error);
+            toast.error(error?.message || 'Something went wrong');
+            return [];
+        }
     },
-    removeCoupon: async () => { 
+    removeCoupon: async () => {
         try {
             set({ coupon: null, isCouponApplied: false });
-        get().calculateTotals();
-        } catch (error:any) {
+            get().calculateTotals();
+        } catch (error: any) {
             console.log(error);
             toast.error(error?.message || 'Something went wrong');
         }

@@ -14,9 +14,8 @@ const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
         const stripe = await stripePromise;
         if (!stripe) {
             console.error("Stripe failed to load");
-            
         }
-        const res = await axios.post('/payments/create-checkout-session', { products: cart, coupon: coupon ? coupon.code : null })
+        const res = await axios.post('/payments/create-checkout-session', { products: cart, couponCode: coupon ? coupon.code : null })
         const session = await res.data;
         if (session?.url) {
             window.location.href = session.url; // التوجيه مباشرة للـ Stripe Checkout
@@ -25,10 +24,11 @@ const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
 
         }
     }
-        const savings = subtotal - total;
-        const formattedSubtotal = subtotal.toFixed(2);
-        const formattedTotal = total.toFixed(2);
-        const formattedSavings = savings.toFixed(2);
+    const savings = subtotal - total;
+    const formattedSubtotal = subtotal.toFixed(2);
+    const formattedTotal = total.toFixed(2);
+    const formattedSavings = savings.toFixed(2);
+    console.log(formattedTotal,formattedSubtotal,formattedSavings,coupon)
         return (
             <motion.div
                 className='space-y-4 rounded-lg border border-gray-700 bg-gray-800 p-4 shadow-sm sm:p-6'
@@ -47,7 +47,7 @@ const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
                         {savings > 0 && (
                             <dl className='flex items-center justify-between gap-4'>
                                 <dt className='text-base font-normal text-gray-300'>Savings</dt>
-                                <dd className='text-base font-medium text-emerald-400'>-${formattedSavings}</dd>
+                                <dd className='text-base font-medium text-emerald-400'>-${Number(formattedSavings)}</dd>
                             </dl>
                         )}
                         {coupon && isCouponApplied && (
@@ -58,7 +58,7 @@ const { total, subtotal, coupon, isCouponApplied, cart } = useCartStore();
                         )}
                         <dl className='flex items-center justify-between gap-4 border-t border-gray-600 pt-2'>
                             <dt className='text-base font-bold text-white'>Total</dt>
-                            <dd className='text-base font-bold text-emerald-400'>${formattedTotal}</dd>
+                            <dd className='text-base font-bold text-emerald-400'>${Number(formattedTotal)}</dd>
                         </dl>
                     </div>
                     <motion.button className='flex w-full items-center justify-center rounded-lg bg-emerald-600 px-5 py-2.5 text-sm font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-4 focus:ring-emerald-300'
