@@ -87,5 +87,13 @@ export const useCartStore = create<ICart>((set, get) => ({
         }
         set({ subtotal: subTotal, total });
     },
-    clearCart: () => set({ cart: [], total: 0, subtotal: 0, isCouponApplied: false, coupon: null }),
+    clearCart: async () => {
+        try {
+            await axios.delete('/cart/clearAll');
+            set({ cart: [], total: 0, subtotal: 0, isCouponApplied: false, coupon: null });
+        } catch (error: any) {
+            console.log(error);
+            toast.error(error?.message || 'Something went wrong');
+        }
+    },
 }))

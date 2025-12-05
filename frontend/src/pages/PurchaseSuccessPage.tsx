@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { useCartStore } from "../stores/useCartStore";
 import axios from "../lib/axios";
 import Confetti from "react-confetti";
+import Spinner from "../component/Spinner";
 
 const PurchaseSuccessPage = () => {
 const [isProcessing, setIsProcessing] = useState<boolean>(true);
@@ -31,9 +32,9 @@ try {
     }
   }, [clearCart]);
 
-  if (isProcessing) return "Processing...";
+  if (isProcessing) return <Spinner/>
 
-	if (error) return `Error: ${error}`;
+	if (error) return <div className="text-red-500 text-center">Error: {error}</div>;
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
