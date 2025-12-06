@@ -3,7 +3,7 @@ import { UserRequest } from "../interfaces";
 import User from "../models/user.model";
 import Product from "../models/product.model";
 import Order from "../models/orderModel";
-import { endianness } from "os";
+
 
 export const createAnalytics = async (req: UserRequest, res: Response) => {
     try {
@@ -16,7 +16,7 @@ export const createAnalytics = async (req: UserRequest, res: Response) => {
             dailySaleData
         })
     } catch (error: any) {
-        console.log('Error form createAnalytics function');
+        console.log('Error form createAnalytics function',error);
         res.status(500).json({ message: error.message })
     }
 }
@@ -59,7 +59,7 @@ const getDailySaleData = async (startDate: Date, endDate: Date) => {
             },
             {
                 $group: {
-                    _id: { $dateToString: { formate: "%Y-%m-%d", date: "$createdAt" } },
+                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
                     sales: { $sum: 1 },
                     revenue: { $sum: "$totalAmount" },
                 },
@@ -71,8 +71,8 @@ const getDailySaleData = async (startDate: Date, endDate: Date) => {
             const foundData = dailySaleData.find(item => item._id === date)
             return {
                 date,
-                sales: foundData.sales || 0,
-                revenue: foundData.revenue || 0
+                sales: foundData?.sales ?? 0,
+                revenue: foundData?.revenue ?? 0
             }
         })
     } catch (error: any) {

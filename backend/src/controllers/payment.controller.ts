@@ -2,7 +2,6 @@ import { Response } from "express";
 import { UserRequest } from "../interfaces";
 import Coupon from "../models/coupon.model";
 import { stripe } from "../lib/stripe";
-import User from "../models/user.model";
 import Order from "../models/orderModel";
 
 export const createCheckoutSession = async (req: UserRequest, res: Response) => {
@@ -70,21 +69,18 @@ export const createCheckoutSession = async (req: UserRequest, res: Response) => 
     }
 }
 
-const createStripeCoupon = async (discountPercentage: number) => {
+const createStripeCoupon = async (discountPercentagePercentage: number) => {
     const coupon = await stripe.coupons.create({
-        percent_off: discountPercentage,
+        percent_off: discountPercentagePercentage,
         duration: "once"
     })
     return coupon.id;
 }
 const createNewCoupon = async (userId: string) => {
-    const existingCoupon = await Coupon.findOne({ userId });
-    if (existingCoupon) {
-        return existingCoupon; // أو تعطي رسالة خطأ حسب منطقك
-    }
+    await Coupon.findOneAndDelete({ userId });
     const coupon = await Coupon.create({
         code: "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),
-        discountPercentage: 10,
+        discountPercentagePercentage: 10,
         expirationDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 days from now
         userId: userId,
     })
