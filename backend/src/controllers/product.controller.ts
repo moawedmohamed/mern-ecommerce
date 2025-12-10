@@ -13,19 +13,32 @@ export const getAllProducts = async (req: Request, res: Response) => {
 }
 export const getFeaturedProducts = async (req: Request, res: Response) => {
     try {
-        let featuredProducts: string | null = await redis.get('featured_products')
-        if (featuredProducts) {
-            res.status(200).json(JSON.parse(featuredProducts));
-        }
-        const product = await Product.find({ isFeatured: true }).lean();
-        if (!featuredProducts) {
-            res.status(404).json({ message: "No featured products found" });
-        }
-        await redis.set('featured_products', JSON.stringify(product)); // 1 day
-    } catch (error) {
+        const cached:string |null = await redis.get('featured_products');
 
+        if (cached) {
+            try {
+                const products = JSON.parse(cached) ; // ✅ parse على string صالح
+                return res.status(200).json(products);
+            } catch (err) {
+                console.warn("Invalid JSON in Redis, deleting key...");
+                await redis.del("featured_products");
+            }
+        }
+
+        const products = await Product.find({ isFeatured: true }).lean();
+
+        if (products.length === 0) {
+            return res.status(404).json({ message: "No featured products found" });
+        }
+
+        await redis.set("featured_products", JSON.stringify(products), { ex: 86400 });
+        return res.status(200).json(products); // 🔹 أرسل المنتجات الفعلية للعميل
+
+    } catch (error: any) {
+        console.log(error);
+        return res.status(500).json({ message: "Server error", error: error.message });
     }
-}
+};
 
 // *create products
 
