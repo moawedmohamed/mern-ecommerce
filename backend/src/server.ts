@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import path from 'path';
 import morgan from 'morgan';
 import dotenv from 'dotenv';
@@ -13,6 +13,7 @@ import { connectDB } from './lib/db';
 import cookieParser from 'cookie-parser';
 import cors from 'cors'
 const app = express();
+const __dirName = path.resolve();
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.json({ limit: '50mb' }));
 app.use(cookieParser());
@@ -25,7 +26,12 @@ app.use("/api/coupons", couponRoutes);
 app.use("/api/payments", paymentRoutes);
 app.use("/api/analytics", analyticsRoutes);
 const PORT: number = Number(process.env.PORT);
-
+if (process.env.NODE_ENV == "production") {
+    app.use(express.static(path.join(__dirName, "/frontend/dist")))
+    app.get("*", (req: Request, res: Response) => {
+        res.sendFile(path.resolve(__dirName,"frontend","dist","index.html"))
+    })
+}
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
     connectDB();

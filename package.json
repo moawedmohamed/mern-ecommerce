@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node ./backend/src/server.ts",
-    "build": "tsc -p ./backend/tsconfig.json",
-    "start": "node ./backend/dist/index.js"
+    "start": "node ./backend/dist/index.js",
+    "build": "pnpm install && npm install --prefix frontend && npm run build --prefix frontend"
   },
   "keywords": [],
   "author": "",
