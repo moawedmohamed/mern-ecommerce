@@ -36,12 +36,20 @@ export interface IProduct {
     quantity: number,
     isFeatured?: boolean,
 }
+export interface ICreateProduct {
+    name: string,
+    description: string,
+    price: number,
+    category: string,
+    image: string,
+    isFeatured?: boolean,
+}
 export interface IProductStore {
     products: IProduct[],
     isLoading: boolean,
     setProduct: (product: IProduct[]) => void; // ✅ add this line
     fetchAllProducts: () => Promise<void>
-    createProduct: (product: IProduct) => Promise<void>
+    createProduct: (product: ICreateProduct) => Promise<void>
     deleteProduct: (id: string) => Promise<void>
     toggleFeaturedProduct: (id: string) => Promise<void>
     fetchProductByCategory: (category: string) => Promise<void>

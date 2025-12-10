@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Loader, PlusCircle, Upload } from "lucide-react";
 import React, { useState } from "react";
 import { motion } from "framer-motion";
@@ -21,7 +22,7 @@ const CreateProductForm = () => {
     image: "",
   });
   //** state management
-  const { createProduct, isLoading } = useProductStore();
+  const { createProduct } = useProductStore();
   const loading = false;
   // ** handlers
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -119,7 +120,7 @@ const CreateProductForm = () => {
             name="price"
             value={newProduct.price}
             onChange={(e) =>
-              setNewProduct({ ...newProduct, price: e.target.value })
+              setNewProduct({ ...newProduct, price: parseFloat(e.target.value) })
             }
             step="0.01"
             className="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm 

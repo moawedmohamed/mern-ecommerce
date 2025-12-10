@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from "zustand";
-import type { IProduct, IProductStore } from "../interfaces";
+import type { ICreateProduct, IProduct, IProductStore } from "../interfaces";
 import axios from "../lib/axios";
 import toast from "react-hot-toast";
 // import { type } from './../interfaces/index';
@@ -10,7 +10,7 @@ export const useProductStore = create<IProductStore>((set) => ({
     products: [],
     isLoading: false,
     setProduct: (products: IProduct[]) => set({ products }),
-    createProduct: async (productData: IProduct) => {
+    createProduct: async (productData: ICreateProduct) => {
         set({ isLoading: true });
         try {
             const res = await axios.post('/products', productData);
