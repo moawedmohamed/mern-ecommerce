@@ -24,6 +24,7 @@ export interface IUserStore {
     login: (data: ILogin) => Promise<void>
     checkAuth: () => Promise<void>
     logout: () => Promise<void>
+    refreshToken:()=>Promise<void>
 }
 export interface IProduct {
     _id: string,
@@ -44,6 +45,7 @@ export interface IProductStore {
     deleteProduct: (id: string) => Promise<void>
     toggleFeaturedProduct: (id: string) => Promise<void>
     fetchProductByCategory: (category: string) => Promise<void>
+    fetchFeaturedProducts:()=>Promise<void>
 }
 export interface ICoupon {
     code: string

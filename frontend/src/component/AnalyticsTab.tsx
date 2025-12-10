@@ -4,7 +4,7 @@ import axios from "../lib/axios";
 import { Users, Package, ShoppingCart, DollarSign } from "lucide-react";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import Spinner from "./Spinner";
-
+import { type LucideIcon } from "lucide-react"; 
 interface AnalyticsCardProps {
   title: string;
   value: string | number;

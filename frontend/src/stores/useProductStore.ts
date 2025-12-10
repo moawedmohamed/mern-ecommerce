@@ -65,5 +65,15 @@ export const useProductStore = create<IProductStore>((set) => ({
             toast.error(error?.message)
         }
 
+    },
+    fetchFeaturedProducts:async()=>{
+        set({isLoading:true});
+        try {
+            const res=await axios.get('/products/featured')
+            set({products:res.data,isLoading:false})
+        } catch (error:any) {
+            set({isLoading:false})
+            console.log('error from fetchFeatureProducts',error)
+        }
     }
 }))

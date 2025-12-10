@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { create } from 'zustand'
 import toast from 'react-hot-toast'
@@ -58,5 +59,40 @@ export const useUserStore = create<IUserStore>((set, get) => ({
             toast.error(error?.response.data.message || 'An error occurred 1')
             console.log('object');
         }
+    },
+    refreshToken: async () => {
+        if (get().checkingAuth) return;
+        set({ checkingAuth: true });
+        try {
+            const res = await axios.post('/auth/refresh-token');
+            set({ checkingAuth: false });
+            return res.data;
+        } catch (error:any) {
+            set({user:null,checkingAuth:false})
+        }
     }
 }))
+
+let refreshPromise: Promise<any>|null = null;
+axios.interceptors.response.use(
+    (resposne) => resposne,
+    async (error) => {
+        const originalRequest = error.config;
+        if (error.response?.status ==401 && !originalRequest._Retry) {
+            originalRequest._Retry = true;
+            try {
+                if (refreshPromise) {
+                    await refreshPromise;
+                    return axios(originalRequest);
+                }
+                refreshPromise = useUserStore.getState().refreshToken();
+                await refreshPromise;
+                return axios(originalRequest);
+            } catch (refreshError:any) {
+                useUserStore.getState().logout();
+                return Promise.reject(refreshError)
+            }
+        }
+        return Promise.reject(error)
+    }
+)
