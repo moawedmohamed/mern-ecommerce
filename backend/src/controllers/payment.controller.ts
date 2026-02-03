@@ -69,9 +69,9 @@ export const createCheckoutSession = async (req: UserRequest, res: Response) => 
     }
 }
 
-const createStripeCoupon = async (discountPercentagePercentage: number) => {
+const createStripeCoupon = async (discountPercentage: number) => {
     const coupon = await stripe.coupons.create({
-        percent_off: discountPercentagePercentage,
+        percent_off: discountPercentage      ,
         duration: "once"
     })
     return coupon.id;
@@ -80,7 +80,7 @@ const createNewCoupon = async (userId: string) => {
     await Coupon.findOneAndDelete({ userId });
     const coupon = await Coupon.create({
         code: "GIFT" + Math.random().toString(36).substring(2, 8).toUpperCase(),
-        discountPercentagePercentage: 10,
+        discountPercentage: 10,
         expirationDate: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), // 7 days from now
         userId: userId,
     })
